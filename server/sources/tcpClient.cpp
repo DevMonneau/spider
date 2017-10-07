@@ -22,12 +22,11 @@ void tcpClient::handle_handshake(const boost::system::error_code& error)
 {
 	if (!error)
 	{
-		std::cout << "handle_handshake" << std::endl;
 		boost::asio::async_read(m_socket, boost::asio::buffer(this->buffer), boost::asio::transfer_at_least(1), boost::bind(&tcpClient::handle_read, this, boost::asio::placeholders::error));
 	}
 	else
 	{
-		std::cout << error.message() << std::endl;
+		std::cerr << error.message() << std::endl;
 	} 
 }
 
@@ -41,7 +40,7 @@ void tcpClient::handle_read(const boost::system::error_code& error)
 	}
 	else
 	{
-		std::cout << error.message() << std::endl;
+		std::cerr << error.message() << std::endl;
 	} 
 }
 
@@ -52,6 +51,6 @@ void tcpClient::handle_write(const boost::system::error_code& error)
 	}
 	else
 	{
-		std::cout << error.message() << std::endl;
+		std::cerr << error.message() << std::endl;
 	} 
 }
