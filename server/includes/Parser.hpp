@@ -5,7 +5,7 @@
 // Login   <adrien.bachelet@epitech.eu>
 // 
 // Started on  Fri Oct  6 15:11:52 2017 Adrien Bachelet
-// Last update Sat Oct  7 20:03:12 2017 Adrien Bachelet
+// Last update Sat Oct  7 23:42:56 2017 Adrien Bachelet
 //
 
 #ifndef		PARSER_HPP
@@ -33,6 +33,8 @@ private:
   bool		check_num(std::string str);
   bool		writeInFile(std::string file, std::string data);
 
+  bool		created = false;
+  std::ofstream	save;
   std::string	id = "";
   std::map<std::string, option>	keywords;
 };

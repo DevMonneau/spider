@@ -5,7 +5,7 @@
 // Login   <adrien.bachelet@epitech.eu>
 // 
 // Started on  Fri Oct  6 15:25:10 2017 Adrien Bachelet
-// Last update Sat Oct  7 23:19:30 2017 Adrien Bachelet
+// Last update Sat Oct  7 23:52:28 2017 Adrien Bachelet
 //
 
 #include	"Parser.hpp"
@@ -139,10 +139,14 @@ bool		Parser::check_num(std::string str)
 
 bool		Parser::writeInFile(std::string const file, std::string data)
 {
-  std::ofstream	save(file.c_str(), std::ios::ate);
-
+  if (this->created == false)
+    save.open(file.c_str(), std::ios::app);
+  this->created = true;
   if(save)
-    save << data << std::endl;
+    {
+      save << data << std::endl;
+      save.close();
+    }
   else
     return (false);
   return (true);
