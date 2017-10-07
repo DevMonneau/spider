@@ -5,7 +5,7 @@
 // Login   <adrien.bachelet@epitech.eu>
 // 
 // Started on  Fri Oct  6 15:25:10 2017 Adrien Bachelet
-// Last update Sat Oct  7 22:07:26 2017 Adrien Bachelet
+// Last update Sat Oct  7 23:19:30 2017 Adrien Bachelet
 //
 
 #include	"Parser.hpp"
@@ -63,7 +63,7 @@ std::string	Parser::connect(std::istringstream *input)
   if (rest != "" || version == "")
     return ("KO\r\n");
   this->id = hostname;
-  this->writeInFile(this->id + ".log", "CONNECT" + hostname + " " + version);
+  this->writeInFile(this->id + ".log", "CONNECT " + hostname + " " + version);
   return ("OK\r\n");
 }
 
@@ -89,7 +89,7 @@ std::string	Parser::keyboard(std::istringstream *input)
     }
   if (it < 3)
     return ("KO\r\n");
-  this->writeInFile(this->id + ".log", "LOGKEY" + keys);
+  this->writeInFile(this->id + ".log", "LOGKEY " + keys);
   return ("OK\r\n");
 }
 
@@ -115,7 +115,7 @@ std::string	Parser::mouse(std::istringstream *input)
     }
   if (it != 5)
     return ("KO\r\n");
-  this->writeInFile(this->id + ".log", "LOGMOUSE" + keys);
+  this->writeInFile(this->id + ".log", "LOGMOUSE " + keys);
   return ("OK\r\n");
 }
 
@@ -139,13 +139,10 @@ bool		Parser::check_num(std::string str)
 
 bool		Parser::writeInFile(std::string const file, std::string data)
 {
-  std::ofstream	save(file.c_str(), std::ios::app);
+  std::ofstream	save(file.c_str(), std::ios::ate);
 
   if(save)
-    {
-      save << data << std::endl;
-      save.close();
-    }
+    save << data << std::endl;
   else
     return (false);
   return (true);
