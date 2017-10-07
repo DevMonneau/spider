@@ -5,6 +5,7 @@ SRC_DIR	=	sources/
 SRC	=	$(SRC_DIR)main.cpp \
 		$(SRC_DIR)Server.cpp \
 		$(SRC_DIR)tcpClient.cpp \
+		$(SRC_DIR)Parser.cpp \
 
 OBJ	= 	$(SRC:.cpp=.o)
 

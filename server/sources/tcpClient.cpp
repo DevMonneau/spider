@@ -1,7 +1,8 @@
-#include "Server.hpp"
-#include "tcpClient.hpp"
 #include <string.h>
 #include <boost/asio/ssl.hpp>
+#include "Server.hpp"
+#include "tcpClient.hpp"
+#include "Parser.hpp"
 
 typedef boost::asio::ssl::stream<boost::asio::ip::tcp::socket> ssl_socket;
 
@@ -33,10 +34,13 @@ void tcpClient::handle_handshake(const boost::system::error_code& error)
 void tcpClient::handle_read(const boost::system::error_code& error)
 {
 	if (!error)
-	{
-		std::cout << this->buffer.data() << std::endl;
-		this->buffer.assign(0);
+	{	
+		Parser parser;
+		std::string key(this->buffer.data());
+		std::cout << key << std::endl;
+		parser.parseInput(key);
 		boost::asio::async_read(m_socket, boost::asio::buffer(this->buffer), boost::asio::transfer_at_least(1), boost::bind(&tcpClient::handle_read, this, boost::asio::placeholders::error));
+		this->buffer.assign(0);
 	}
 	else
 	{
