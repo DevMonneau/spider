@@ -33,19 +33,18 @@ void tcpClient::handle_handshake(const boost::system::error_code& error)
 
 void tcpClient::handle_read(const boost::system::error_code& error)
 {
-	if (!error)
-	{	
-		Parser parser;
-		std::string key(this->buffer.data());
-		std::cout << key << std::endl;
-		parser.parseInput(key);
-		boost::asio::async_read(m_socket, boost::asio::buffer(this->buffer), boost::asio::transfer_at_least(1), boost::bind(&tcpClient::handle_read, this, boost::asio::placeholders::error));
-		this->buffer.assign(0);
-	}
-	else
-	{
-		std::cerr << error.message() << std::endl;
-	} 
+  if (!error)
+    {	
+      std::string key(this->buffer.data());
+      std::cout << key << std::endl;
+      parser.parseInput(key);
+      boost::asio::async_read(m_socket, boost::asio::buffer(this->buffer), boost::asio::transfer_at_least(1), boost::bind(&tcpClient::handle_read, this, boost::asio::placeholders::error));
+      this->buffer.assign(0);
+    }
+  else
+    {
+      std::cerr << error.message() << std::endl;
+    } 
 }
 
 void tcpClient::handle_write(const boost::system::error_code& error)

