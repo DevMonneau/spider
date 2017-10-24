@@ -40,7 +40,7 @@ void Server::handle_accept(tcpClient* new_tcpClient, const boost::system::error_
 {
 	if (!error)
 	{
-		std::cout << "Reçu un client!" << std::endl;
+		std::cout << "[+] client!" << std::endl;
 		new_tcpClient->start();
 		start_accept();
 	}

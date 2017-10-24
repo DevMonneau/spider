@@ -84,7 +84,7 @@ std::string	Parser::keyboard(std::istringstream *input)
 	      res = std::stoul(std::string("32"), NULL, 10);
 	      if (this->checkSeparator(keys) && word != "")
 		{
-		  this->writeInFile(this->id + ".log", "LOGWORD = " + this->word);
+		  this->writeInFile(this->id + ".log", "LOGWORD " + this->word);
       this->db.insertDoc(this->id, this->word);
 		  word.clear();
 		}
